@@ -123,6 +123,26 @@ public class SauceDemoTest {
     //shouldHavePriceInformationForItemInACart (verify: compare prices catalog/cart)
     //shouldRemoveSauceLabsBackpackFromCart (verify: CartIcon or ButtonChange)
     //shouldRemoveSauceLabsBackpackFromCartOnCatalogPage
+    @Test
+    public void shouldRemoveSauceLabsBackpackFromCartOnCatalogPage(){
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.saucedemo.com");
+
+        WebElement username = driver.findElement(By.id("user-name"));
+        WebElement password = driver.findElement(By.id("password"));
+        WebElement loginButton = driver.findElement(By.id("login-button"));
+
+        username.sendKeys("standard_user");
+        password.sendKeys("secret_sauce");
+        loginButton.click();
+
+        WebElement test = driver.findElement(By.id("add-to-cart-sauce-labs-backpack"));
+        test.click();
+
+        WebElement removeBtn = driver.findElement(By.id("remove-sauce-labs-backpack"));
+        removeBtn.click();
+        driver.quit();
+    }
     //shouldAddListOfItemsToTheCart
     //shouldPersistCheckoutDetails
 }
