@@ -43,6 +43,9 @@ public class SauceDemoTest {
         loginButton.click();
 
         WebElement test = driver.findElement(By.className("error-message-container"));
+        String errorMessage = test.getText();
+        String expectedErrorMessage = "Epic sadface: Username and password do not match any user in this service";
+        Assert.assertEquals(errorMessage, expectedErrorMessage);
 
         String expectedUrl = "https://www.saucedemo.com/";
         String actualUrl = driver.getCurrentUrl();
@@ -65,6 +68,9 @@ public class SauceDemoTest {
         loginButton.click();
 
         WebElement test = driver.findElement(By.className("error-message-container"));
+        String errorMessage = test.getText();
+        String expectedErrorMessage = "Epic sadface: Sorry, this user has been locked out.";
+        Assert.assertEquals(errorMessage, expectedErrorMessage);
 
         String expectedUrl = "https://www.saucedemo.com/";
         String actualUrl = driver.getCurrentUrl();
@@ -94,6 +100,7 @@ public class SauceDemoTest {
 
         driver.quit();
     }
+
     @Test
     public void shouldAddSauceLabsBackpackIntoCartFromItemDetailsView(){
         WebDriver driver = new ChromeDriver();
@@ -121,6 +128,36 @@ public class SauceDemoTest {
         driver.quit();
     }
     //shouldHavePriceInformationForItemInACart (verify: compare prices catalog/cart)
+    @Test
+    public void shouldHavePriceInformationForItemInACart(){
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.saucedemo.com");
+
+        WebElement username = driver.findElement(By.id("user-name"));
+        WebElement password = driver.findElement(By.id("password"));
+        WebElement loginButton = driver.findElement(By.id("login-button"));
+
+        username.sendKeys("standard_user");
+        password.sendKeys("secret_sauce");
+        loginButton.click();
+
+        WebElement backpackAddToCart = driver.findElement(By.id("add-to-cart-sauce-labs-backpack"));
+        backpackAddToCart.click();
+
+        WebElement cartLink = driver.findElement(By.className("shopping_cart_link"));
+        cartLink.click();
+
+        String expectedUrl = "https://www.saucedemo.com/cart.html";
+        String actualUrl = driver.getCurrentUrl();
+        Assert.assertEquals(actualUrl, expectedUrl);
+
+        String backpackPrice = "$29.99";
+        WebElement inventoryItemPrice = driver.findElement(By.className("inventory_item_price"));
+        String itemPrice = inventoryItemPrice.getText();
+        Assert.assertEquals(backpackPrice, itemPrice);
+
+        driver.quit();
+    }
     //shouldRemoveSauceLabsBackpackFromCart (verify: CartIcon or ButtonChange)
     //shouldRemoveSauceLabsBackpackFromCartOnCatalogPage
     @Test
