@@ -18,6 +18,7 @@ public class SauceDemoSmokeTest extends SauceDemoBaseTest {
     //shouldShowErrorForEmptyCredentials
     @Test
     public void shouldSuccessfullyLoginStandardUser(){
+        System.out.println(System.getProperty("browser"));
         LandingPage page = new LandingPage(driver, host);
         page.visit();
         page.loginWith("standard_user","secret_sauce");
@@ -44,16 +45,10 @@ public class SauceDemoSmokeTest extends SauceDemoBaseTest {
 
     @Test
     public void shouldShowAnErrorForLockedOutUser(){
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.saucedemo.com");
-
-        WebElement username = driver.findElement(By.id("user-name"));
-        WebElement password = driver.findElement(By.id("password"));
-        WebElement loginButton = driver.findElement(By.id("login-button"));
-
-        username.sendKeys("locked_out_user");
-        password.sendKeys("secret_sauce");
-        loginButton.click();
+        LandingPage page = new LandingPage(driver, host);
+        page.visit();
+        page.loginWith("locked_out_user","secret_sauce");
+        page.isUserLoggedInSuccessfully();
 
         WebElement test = driver.findElement(By.className("error-message-container"));
         String errorMessage = test.getText();
@@ -66,9 +61,6 @@ public class SauceDemoSmokeTest extends SauceDemoBaseTest {
 
         driver.quit();
     }
-
-
-    //shouldAddSauceLabsBackpackIntoCartFromCatalogView
 
     @Test
     public void shouldAddSauceLabsBackpackIntoCartFromCatalogView() throws InterruptedException {
@@ -102,7 +94,7 @@ public class SauceDemoSmokeTest extends SauceDemoBaseTest {
 
         Assert.assertEquals(itemDetailsView.cartItemsCount(), expectedCartItemsCount);
     }
-    //shouldHavePriceInformationForItemInACart (verify: compare prices catalog/cart)
+
     @Test
     public void shouldHavePriceInformationForItemInACart(){
         String username = "standard_user";
@@ -127,7 +119,6 @@ public class SauceDemoSmokeTest extends SauceDemoBaseTest {
     }
     //shouldRemoveSauceLabsBackpackFromCart (verify: CartIcon or ButtonChange)
 
-    //shouldRemoveSauceLabsBackpackFromCartOnCatalogPage
     @Test
     public void shouldRemoveSauceLabsBackpackFromCartOnCatalogPage(){
         String username = "standard_user";
