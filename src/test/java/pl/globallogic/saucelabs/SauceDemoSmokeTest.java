@@ -126,6 +126,7 @@ public class SauceDemoSmokeTest extends SauceDemoBaseTest {
         cartPage.inventoryItemPriceCompare(backpackPrice);
     }
     //shouldRemoveSauceLabsBackpackFromCart (verify: CartIcon or ButtonChange)
+
     //shouldRemoveSauceLabsBackpackFromCartOnCatalogPage
     @Test
     public void shouldRemoveSauceLabsBackpackFromCartOnCatalogPage(){
@@ -145,7 +146,23 @@ public class SauceDemoSmokeTest extends SauceDemoBaseTest {
         catalogPage.removeFromCart(itemNameButton);
         catalogPage.isThereItemsInCart();
     }
-    //shouldAddListOfItemsToTheCart
+    @Test
+    public void shouldAddListOfItemsToTheCart(){
+        String username = "standard_user";
+        String password = "secret_sauce";
+        String itemName1 = "Sauce Labs Backpack";
+        String itemName2 = "Sauce Labs Fleece Jacket";
+        String itemName3 = "Sauce Labs Onesie";
+        int expectedCartItemsCount = 3;
+        LandingPage landingPage = new LandingPage(driver, host);
+        landingPage.visit();
+        landingPage.loginWith(username, password);
+        CatalogPage catalogPage = new CatalogPage(driver);
+        catalogPage.addToCart(itemName1);
+        catalogPage.addToCart(itemName2);
+        catalogPage.addToCart(itemName3);
+        Assert.assertEquals(catalogPage.cartItemsCount(), expectedCartItemsCount);
+    }
     @Test
     public void shouldPersistCheckoutDetails(){
         String username = "standard_user";
